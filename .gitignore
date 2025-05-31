@@ -1,0 +1,5 @@
+copy/
+venv/
+__pycache__/
+visualise.py
+.python-version
