@@ -1,3 +1,4 @@
+import argparse
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -12,32 +13,43 @@ from utils.constants import (
 )
 from utils.helpers import export_to_csv, export_to_json, parse_event_card
 
-# Setup headless Chrome
-options = Options()
-options.add_argument("--headless")
-driver = webdriver.Chrome(options=options)
 
-# Scape pages 1 to 10
-events = []
-for page in range(1, 11):
-    print(f"Scraping page {page}")
+def main():
+    parser = argparse.ArgumentParser(description="Scrape Eventbrite events")
+    parser.add_argument("--pages", type=int, default=10,
+                        help="Number of pages to scrape (default: 10)")
+    args = parser.parse_args()
 
-    # Navigate to the Eventbrite URL
-    url = EVENTBRITE_BASE_URL.format(page=page)
-    driver.get(url)
-    time.sleep(WAIT_TIME)
+    # Setup headless Chrome
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
 
-    # Find all event cards
-    event_cards = driver.find_elements(
-        By.CSS_SELECTOR, EVENT_CARD_SELECTOR)
+    # Scape pages 1 to 10
+    events = []
+    for page in range(1, args.pages + 1):
+        print(f"Scraping page {page}")
 
-    # Parse each event card
-    for event_card in event_cards:
-        event_data = parse_event_card(event_card, driver)
-        if event_data:
-            events.append(event_data)
+        # Navigate to the Eventbrite URL
+        url = EVENTBRITE_BASE_URL.format(page=page)
+        driver.get(url)
+        time.sleep(WAIT_TIME)
 
-driver.quit()
+        # Find all event cards
+        event_cards = driver.find_elements(
+            By.CSS_SELECTOR, EVENT_CARD_SELECTOR)
 
-export_to_csv(events, OUTPUT_CSV)
-export_to_json(events, OUTPUT_JSON)
+        # Parse each event card
+        for event_card in event_cards:
+            event_data = parse_event_card(event_card, driver)
+            if event_data:
+                events.append(event_data)
+
+    driver.quit()
+
+    export_to_csv(events, OUTPUT_CSV)
+    export_to_json(events, OUTPUT_JSON)
+
+
+if __name__ == "__main__":
+    main()
