@@ -3,14 +3,14 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import time
 
-from constants import (
+from utils.constants import (
     EVENTBRITE_BASE_URL,
     EVENT_CARD_SELECTOR,
     OUTPUT_CSV,
     OUTPUT_JSON,
     WAIT_TIME,
 )
-from helpers import export_to_csv, export_to_json, parse_event_card
+from utils.helpers import export_to_csv, export_to_json, parse_event_card
 
 # Setup headless Chrome
 options = Options()
@@ -19,7 +19,7 @@ driver = webdriver.Chrome(options=options)
 
 # Scape pages 1 to 10
 events = []
-for page in range(1, 2):
+for page in range(1, 11):
     print(f"Scraping page {page}")
 
     # Navigate to the Eventbrite URL

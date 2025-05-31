@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from constants import (
+from utils.constants import (
     ANCHOR_SELECTOR,
     ATTR_CATEGORY,
     ATTR_HREF,
