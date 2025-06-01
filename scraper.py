@@ -27,6 +27,7 @@ def main():
 
     # Scape pages 1 to 10
     events = []
+    seen_events = set()
     for page in range(1, args.pages + 1):
         print(f"Scraping page {page}")
 
@@ -41,7 +42,7 @@ def main():
 
         # Parse each event card
         for event_card in event_cards:
-            event_data = parse_event_card(event_card, driver)
+            event_data = parse_event_card(event_card, driver, seen_events)
             if event_data:
                 events.append(event_data)
 

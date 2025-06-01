@@ -14,10 +14,8 @@ from utils.constants import (
     URGENCY_KEYWORDS,
 )
 
-seen_events = set()
 
-
-def parse_event_card(event: WebElement, driver: WebDriver) -> dict[str, str] | None:
+def parse_event_card(event: WebElement, driver: WebDriver, seen_events: set[str]) -> dict[str, str] | None:
     """
     Parse the event card and return a dictionary of the event data.
 
@@ -62,22 +60,22 @@ def parse_event_card(event: WebElement, driver: WebDriver) -> dict[str, str] | N
                 host = text
 
         # 4. Consolidate data
-        event = {}
-        event["Title"] = title
-        event["URL"] = url
-        event["Location"] = location
-        event["Paid Status"] = paid_status
-        event["Category"] = category
-        event["Urgency"] = urgency
-        event["Date & Time"] = date_time
-        event["Price"] = price
-        event["Host"] = host
+        event_data = {}
+        event_data["Title"] = title
+        event_data["URL"] = url
+        event_data["Location"] = location
+        event_data["Paid Status"] = paid_status
+        event_data["Category"] = category
+        event_data["Urgency"] = urgency
+        event_data["Date & Time"] = date_time
+        event_data["Price"] = price
+        event_data["Host"] = host
 
-        return event
+        return event_data
 
     except Exception as e:
         print(f"Failed to parse event: {e}")
-        return (None,) * 9  # Always return a 9-element tuple
+        return None
 
 
 def export_to_csv(events: list[dict[str, str]], filename: str) -> None:
@@ -87,4 +85,4 @@ def export_to_csv(events: list[dict[str, str]], filename: str) -> None:
 
 def export_to_json(events: list[dict[str, str]], filename: str) -> None:
     df = pd.DataFrame(events)
-    df.to_json(filename, orient='records', lines=True, indent=4)
+    df.to_json(filename, orient='records', indent=4)
