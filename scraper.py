@@ -25,7 +25,7 @@ def main():
     options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
 
-    # Scape pages 1 to 10
+    # Scape pages 1 to user-specified number of pages (default: 10)
     events = []
     seen_events = set()
     for page in range(1, args.pages + 1):

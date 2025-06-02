@@ -28,7 +28,7 @@ def parse_event_card(event: WebElement, driver: WebDriver, seen_events: set[str]
         title = driver.execute_script(
             "return arguments[0].innerText;", title_elem).strip()
 
-        # Check if the event has already been seen
+        # Check if the event has already been scraped
         if title in seen_events:
             return None
 
